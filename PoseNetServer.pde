@@ -6,6 +6,8 @@ Requires WebSockets Library: https://github.com/alexandrainst/processing_websttS
 
 import websockets.*;
 
+PVector[] points;
+
 WebsocketServer poseNetSocket;
 String poseNetMessage = "";
 
@@ -19,5 +21,13 @@ void setupPoseNetReceiver(int _port, String _channel) {
 
 void webSocketServerEvent(String msg) {
   poseNetMessage = msg;
-  println(msg);
+  
+  String[] pointString = msg.split(" ");
+  if (pointString.length %2 == 0) {
+    points = new PVector[int(pointString.length/2)];
+    for (int i=0; i<pointString.length; i+= 2) {
+      points[int(i/2)] = new PVector(float(pointString[i]), float(pointString[i+1]));
+    }  
+    println(points);
+  }
 }
